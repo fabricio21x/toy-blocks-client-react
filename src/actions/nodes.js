@@ -8,11 +8,12 @@ const checkNodeStatusStart = (node) => {
   };
 };
 
-const checkNodeStatusSuccess = (node, res) => {
+const checkNodeStatusSuccess = (node, res, blocksRes) => {
   return {
     type: types.CHECK_NODE_STATUS_SUCCESS,
     node,
     res,
+    blocksRes,
   };
 };
 
@@ -27,16 +28,23 @@ export function checkNodeStatus(node) {
   return async (dispatch) => {
     try {
       dispatch(checkNodeStatusStart(node));
-      const res = await fetch(`${node.url}/api/v1/status`);
+      const nodeResponse = await fetch(`${node.url}/api/v1/status`);
+      const blocksResponse = await fetch(`${node.url}/api/v1/blocks`);
 
-      if (res.status >= 400) {
+      if (nodeResponse.status >= 400 || blocksResponse.status >= 400) {
         dispatch(checkNodeStatusFailure(node));
         return;
       }
 
-      const json = await res.json();
+      const nodeJson = await nodeResponse.json();
+      const blocksJson = (await blocksResponse.json()).data.map(
+        ({ id, attributes }) => {
+          const { index, data } = attributes;
+          return { id, index, data };
+        }
+      );
 
-      dispatch(checkNodeStatusSuccess(node, json));
+      dispatch(checkNodeStatusSuccess(node, nodeJson, blocksJson));
     } catch (err) {
       dispatch(checkNodeStatusFailure(node));
     }

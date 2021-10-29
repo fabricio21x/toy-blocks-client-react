@@ -4,6 +4,26 @@ import mockFetch from "cross-fetch";
 
 jest.mock("cross-fetch");
 
+const node_blocks_response = {
+  data: [
+    {
+      id: "1",
+      attributes: {
+        index: 1,
+        data: "By reason of these things",
+      },
+    },
+  ],
+};
+
+const node_blocks_mock = [
+  {
+    id: "1",
+    index: 1,
+    data: "By reason of these things",
+  },
+];
+
 describe("Actions", () => {
   const dispatch = jest.fn();
 
@@ -16,6 +36,7 @@ describe("Actions", () => {
     url: "http://localhost:3002",
     online: false,
     name: null,
+    blocks: [],
   };
 
   it("should fetch the node status", async () => {
@@ -24,6 +45,14 @@ describe("Actions", () => {
         status: 200,
         json() {
           return Promise.resolve({ node_name: "Secret Lowlands" });
+        },
+      })
+    );
+    mockFetch.mockReturnValueOnce(
+      Promise.resolve({
+        status: 200,
+        json() {
+          return Promise.resolve(node_blocks_response);
         },
       })
     );
@@ -37,6 +66,7 @@ describe("Actions", () => {
         type: ActionTypes.CHECK_NODE_STATUS_SUCCESS,
         node,
         res: { node_name: "Secret Lowlands" },
+        blocksRes: node_blocks_mock,
       },
     ];
 

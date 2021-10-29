@@ -68,7 +68,7 @@ exports[`<Nodes /> should match snapshot 1`] = `
             <span
               className="makeStyles-text-13 makeStyles-text-15"
             >
-              OFFLINE
+              ONLINE
             </span>
           </div>
         </div>
@@ -127,11 +127,24 @@ exports[`<Nodes /> should match snapshot 1`] = `
             <div
               className="MuiAccordionDetails-root"
             >
-              <p
-                className="MuiTypography-root MuiTypography-body1"
+              <div
+                className="flex-1 flex-col space-y-2"
               >
-                Blocks go here
-              </p>
+                <div
+                  className="flex-1 flex-col bg-disabled px-2 pt-2 pb-1"
+                >
+                  <div
+                    className="text-primary font-bold"
+                  >
+                    001
+                  </div>
+                  <div
+                    className="text-dark font-medium"
+                  >
+                    By reason of these things
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -248,11 +261,15 @@ exports[`<Nodes /> should match snapshot 1`] = `
             <div
               className="MuiAccordionDetails-root"
             >
-              <p
-                className="MuiTypography-root MuiTypography-body1"
+              <div
+                className="flex-1 flex-col space-y-2"
               >
-                Blocks go here
-              </p>
+                <p
+                  className="MuiTypography-root MuiTypography-body1"
+                >
+                  No blocks to show
+                </p>
+              </div>
             </div>
           </div>
         </div>

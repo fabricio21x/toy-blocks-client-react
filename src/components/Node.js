@@ -11,9 +11,12 @@ import {
 } from "@material-ui/core";
 import colors from "../constants/colors";
 import Status from "./Status";
+import Block from "./Block";
 
 const Node = ({ node, expanded, toggleNodeExpanded }) => {
   const classes = useStyles();
+  const { name, url, loading, online, blocks } = node;
+
   return (
     <Accordion
       elevation={3}
@@ -33,20 +36,32 @@ const Node = ({ node, expanded, toggleNodeExpanded }) => {
         <Box className={classes.summaryContent}>
           <Box>
             <Typography variant="h5" className={classes.heading}>
-              {node.name || "Unknown"}
+              {name || "Unknown"}
             </Typography>
             <Typography
               variant="subtitle1"
               className={classes.secondaryHeading}
             >
-              {node.url}
+              {url}
             </Typography>
           </Box>
-          <Status loading={node.loading} online={node.online} />
+          <Status loading={loading} online={online} />
         </Box>
       </AccordionSummary>
       <AccordionDetails>
-        <Typography>Blocks go here</Typography>
+        <div className="flex-1 flex-col space-y-2">
+          {blocks.length === 0 ? (
+            <Typography>No blocks to show</Typography>
+          ) : (
+            blocks.map((block, index) => (
+              <Block
+                key={`${name}-${index}`}
+                number={block.index}
+                content={block.data}
+              />
+            ))
+          )}
+        </div>
       </AccordionDetails>
     </Accordion>
   );
